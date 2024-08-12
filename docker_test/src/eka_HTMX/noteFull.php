@@ -18,11 +18,9 @@ session_start();
             $_SESSION['notes'][] = $newNote; // $_POST['note'];
 
             // 3. palautetaan HTML
-            echo "<ul>";
-                foreach($_SESSION['notes'] as $note){
-                    echo "<li>" . htmlspecialchars(trim($note)) . "</li>";
-                }
-            echo "</ul>";
+        
+
+            header("Location: index.php");
             exit();
         }else{
             echo "No 'note' in POST";

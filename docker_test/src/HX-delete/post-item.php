@@ -19,6 +19,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
         // Joten uusin indeksi on pituus - 1
 
         $newIndex = count($_SESSION['items']) - 1;
+        
 
         // Palautuksena riittää pelkkä uusin li-elementti
         echo "

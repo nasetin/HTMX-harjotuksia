@@ -2,6 +2,8 @@
 
     session_start();
 
+    //usleep(400000);
+
     if(isset($_SESSION['items']) === false){
 
         $_SESSION['items'] = [];

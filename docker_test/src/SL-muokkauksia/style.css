@@ -55,6 +55,16 @@ form button:active {
     margin: 0;
 }
 
+#forms {
+    display: flex;
+    justify-content: space-between;
+}
+
+#clear-all{
+    margin-right: 1rem;
+    background-color: rgb(255, 72, 72);
+}
+
 #items li {
     display: flex;
     justify-content: space-between;

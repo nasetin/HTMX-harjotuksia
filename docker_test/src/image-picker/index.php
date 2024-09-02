@@ -2,6 +2,8 @@
 
 include "data/images.php"; // $DATABASE_IMAGES muuttuja
 include "components/image.php"; // renderImage()
+include "funcs.php"; // getSuggestedImages()
+
 
 session_start();
 // session_destroy();
@@ -18,17 +20,39 @@ if(!isset($_SESSION['selected-images'])){
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
+    <!-- Tässä esimerkki HTMX konfiguroinista -->
+    <!-- <meta name="htmx-config" content='{"defaultSwapStyle": "outerHTML"}'> -->
     <script src="htmx.js" defer></script>
+    <script src="debug-htmx.js" defer></script>
     <script src="main.js" defer></script>
     <title>Image Picker</title>
 </head>
-<body>
+<!-- Tässä testataan htmx debug lisäosaa -->
+<!-- <body hx-ext="debug"> -->
+    <body>
     <header id="testi">
         <img src="logo.png" alt="Camera logo">
         <h1>PhotoPicker</h1>
         <p>Pick a collection of photos from the selection.</p>
     </header>
     <main>
+        <section id="suggested-images-section">
+            <h2>Currently suggested</h2>
+            <ul id="suggested-images"
+                hx-get="suggested-images.php"
+                hx-swap="innerHTML"
+                hx-trigger="every 5s"
+            >
+                    <?php 
+                        $suggestedImages = getSuggestedImages($DATABASE_IMAGES);
+                        foreach($suggestedImages as $image){
+                            echo renderImage($image);
+                        }
+                    ?>
+            </ul>
+            <div id="loading"></div>
+        </section>
+
         <section id="selected-images-section">
             <!-- Käyttäjän valinnat -->
             <h2>Selected Images</h2>

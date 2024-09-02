@@ -231,3 +231,19 @@ li:hover{
   }
 
 /* Modal loppuu tähän */
+
+@keyframes timer {
+    from{
+        width: 0%;
+    }
+    to{
+        width: 100%;
+    }
+}
+
+#loading {
+    background-color: #1f1c2c;
+    width: 0%;
+    height: 0.4rem;
+    animation: timer 5s linear forwards;
+}

@@ -6,6 +6,7 @@ session_start();
 
 include "data/images.php"; // $DATABASE_IMAGES muuttuja
 include "components/image.php"; // renderImage()
+include "funcs.php";
 
 if($_SERVER['REQUEST_METHOD'] === 'POST'){
     // Käyttäjän klikkaaman kuvan id
@@ -42,6 +43,17 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
             echo renderImage($image);
         }
     echo "</ul>";  
+
+        // Päivitetään suggested images section
+        $suggestedImages = getSuggestedImages($DATABASE_IMAGES);
+        echo "<ul id=\"suggested-images\" hx-swap-oob=\"true\">";
+
+            foreach($suggestedImages as $image){
+                echo renderImage($image);
+            }
+       
+    echo "</ul>";
+
 }
 
 if($_SERVER['REQUEST_METHOD'] === 'DELETE'){

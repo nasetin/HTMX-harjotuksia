@@ -2,7 +2,7 @@
 
 if($_SERVER['REQUEST_METHOD'] === 'POST'){
     if(isset($_POST['email']) && strpos($_POST['email'], "@") === false){
-        echo "E-mail address is invalid.";
+        echo "E-Mail address is invalid.";
     }elseif(isset($_POST['email']) && strpos($_POST['email'], "@") === true){
         echo ""; // email ok
     }elseif(isset($_POST['password']) && strlen($_POST['password']) < 8){

@@ -1,8 +1,10 @@
-<?php
+<?php 
+session_start();
+require "db_conn.php";
 
 if($_SERVER['REQUEST_METHOD'] === 'POST'){
-    $email = isset($_POST['email']) ? $_POST['email'] : null; // ternary operator
-    $password = isset($_POST['password']) ? $_POST['password'] : null; // ternary operator
+    $email = isset($_POST['email']) ? $_POST['email'] : null; // ternary operation
+    $password = isset($_POST['password']) ? $_POST['password'] : null; // ternary operation
 
     $errors = [];
 
@@ -16,17 +18,49 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
 
     // generoidaan vastaus virheiden perusteella
     if(count($errors) > 0){
-        echo "       
-            <ul id='form-errors'> 
+        // Lisätään virhekoodi: validation error 422
+        http_response_code(422);
+
+        echo "
+                <ul id='form-errors'>
         ";
         foreach($errors as $error){
             echo "<li>{$error}</li>";
         }
         echo "
-            </ul>
+                </ul>
         ";
-    } else {
-        echo ""; // ei virheitä
+
+    } elseif(1 === 2){ // Testataan virhe tilannetta, tämä haara aktivoituu aina ennen alempaa haaraa
+        // header("HX-Retarget: .control"); // korvattu response-targets lisäosalla
+        header("HX-Reswap: beforebegin"); // Voisi korvata käyttämällä uutta diviä index-sivulla
+        // Lisätään virhekoodi: internal server error 500
+        http_response_code(500);
+        echo "<p class=\"error\">A server-side error occurred. Please try again.</p>";
+    }
+    else {
+        // jos ei ole virheitä, tehdään uudelleenohjaus sivuston sisältöön
+
+        // SQL statement / query
+        $stmt = $conn->prepare("SELECT * FROM users WHERE email = ?");
+        $stmt->bind_param("s", $email);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $user = $result->fetch_assoc();
+
+        $stmt->close();
+        if($user && password_verify($password, $user['password'])){
+            // Tunnukset ovay oikein
+            $_SESSION['email'] = $user["email"];
+            header("HX-Redirect: authenticated.php");
+        }else{
+            // kirjautumistiedot väärin
+            http_response_code(401);
+            echo "<p class=\"error\">Invalid email or password.</p>";
+        }
+
+
+        // echo ""; // ei virheitä
     }
 }
 

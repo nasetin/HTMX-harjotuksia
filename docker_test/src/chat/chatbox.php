@@ -76,7 +76,7 @@ $mysqli->close();
         <?php endforeach; ?>
         <div 
         hx-ext="sse" 
-        sse-connect="stream.php" 
+        sse-connect="http://localhost:3001/stream" 
         sse-swap="message" 
         hx-swap="beforeend"
         >
